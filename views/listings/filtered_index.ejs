@@ -1,0 +1,121 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="filters-added">
+    <h3>Showing results for: </h3>
+    <div class="filters">
+        <% let cnt = 0 %>
+        <% for(let key in appliedFilters) { %>
+            <% if(appliedFilters[key]) { %>
+                <%
+                    let k = key.charAt(0).toUpperCase() + key.slice(1)
+                    let val = appliedFilters[key]
+                    if(val !== '') cnt += 1
+
+                    if(k === "Release_date_from") {
+                        k = "Release date from"
+                    } else if(k === "Release_date_to") {
+                        k = "Release date to"
+                    } else if(k === "Original_language") {
+                        k = "Original Language"
+                        if(val === "en") {
+                            val = "English"
+                        } else if(val === 'hi') {
+                            val = "Hindi"
+                        } else {
+                            val = ["English" , "Hindi"]
+                        }
+                    } 
+
+                    if(Array.isArray(val)) {
+                        val = val.join(', ')
+                    }  
+                %>           
+
+                <p><%=k%>: <%=val%></p>
+            <%}%>
+        <%}%>
+        
+        <% if(cnt === 0) { %>
+            <p>No Filters Added</p>
+        <% } %>
+        <p><b>Total Movies Found: </b><%= moviesFound %></p>
+    </div>
+</div>
+
+
+<br><br>
+<div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 g-4">
+    <% for(let movie of allMovies) { %>
+    <div class="col">
+        <a href="/movies/<%=movie._id%>" class="listing-link">
+            <div class="card h-100 movie-card">
+                <form class="watchlater-badge" action="/user/<%=movie._id%>/addtoList" method="post">
+                    <button>watch-later</button>
+                </form>
+                <div class="rating-badge">
+                    <%= movie.vote_average.toFixed(1) %><span class="small">/10</span>
+                </div>
+                <img src="<%=movie.poster_url%>" class="card-img-top" style="height: 18rem;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0 text-truncate" style="max-width: 80%;">
+                            <b><%= movie.title %></b>
+                        </h5>
+                        <small class="text-muted"><%= movie.duration %></small>
+                    </div>
+                    <p class="genre-text">
+                        <b><%= movie.genres.slice(0, 2).join(', ') %> </b>
+                        <% if(movie.genres.length > 2) { %>...<% } %>
+                    </p>
+                    <p class="card-text overview-text">
+                        <%= movie.overview %>
+                    </p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <% } %>
+</div>
+
+<!-- Used Claude below this section -->
+<!-- --- PAGINATION SECTION --- -->
+<nav aria-label="Page navigation" class="mt-5">
+    <ul class="pagination justify-content-center">
+        <!-- Previous Button -->
+        <li class="page-item <%= currentPage == 1 ? 'disabled' : '' %>">
+            <a class="page-link bg-dark text-white border-secondary" href="/movies?page=<%= currentPage - 1 %>">Previous</a>
+        </li>
+
+        <!-- Page Numbers (Shows current page and 2 neighbors) -->
+        <% for(let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) { %>
+            <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+                <a class="page-link <%= currentPage == i ? 'bg-danger border-danger' : 'bg-dark text-white border-secondary' %>" href="/movies?page=<%= i %>">
+                    <%= i %>
+                </a>
+            </li>
+        <% } %>
+
+        <!-- Next Button -->
+        <li class="page-item <%= currentPage == totalPages ? 'disabled' : '' %>">
+            <a class="page-link bg-dark text-white border-secondary" href="/movies?page=<%= parseInt(currentPage) + 1 %>">Next</a>
+        </li>
+    </ul>
+</nav>
+
+<!-- Jump to Page Section -->
+<div class="d-flex justify-content-center mt-3 pb-5">
+    <form action="/movies" method="GET" class="d-flex align-items-center gap-2" style="max-width: 300px;">
+        <label class="text-nowrap" for="pageNumber" style="color: rgb(180, 180, 180);">Jump to: </label>
+        <input 
+            type="number" 
+            name="page" 
+            class="form-control bg-medium text-dark border-secondary form-control-sm" 
+            placeholder="Page..." 
+            min="1" 
+            max="<%= totalPages %>"
+            required
+            id="pageNumber"
+        >
+        <button type="submit" class="btn btn-sm btn-outline-danger">Go</button>
+    </form>
+</div>

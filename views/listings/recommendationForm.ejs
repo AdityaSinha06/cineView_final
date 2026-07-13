@@ -1,0 +1,55 @@
+<%layout("/layouts/boilerplate.ejs")%>
+
+<div class="info">
+    <p><h3>Info: </h3> Here, You'll get top 20 movies similar to the movie of your choice</p>
+    <p>Just enter the movie name, and get results!</p>
+</div>
+
+<div class="recForm">
+    <form method="get" action="/movies/getrecommendations">
+        <div class="input">
+            <label for="movieName">Enter Movie Name: </label>
+            <input type="text" id="movieName" name="name" placeholder="e.g. Dhurandhar" value="<%= query || '' %>" required>
+        </div> <br>
+        
+        <button class="btn btn-danger" id="recBtn" style="background-color: var(--blood-red); border: none;">submit</button>
+    </form>
+</div>
+
+<%if(allMovies.length !== 0) {%>
+    <br><br>
+    <h3>Showing recommendations for "<%= query %>"</h3> <br>
+    
+    <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 g-4" style="margin-top: 1rem; margin-bottom: 3rem;">
+        <% for(let movie of allMovies) { %>
+        <div class="col">
+            <a href="/movies/<%=movie._id%>" class="listing-link">
+                <div class="card h-100 movie-card">
+                    <form class="watchlater-badge" action="/user/<%=movie._id%>/addtoList" method="post">
+                        <button>watch-later</button>
+                    </form>
+                    <div class="rating-badge">
+                        <%= movie.vote_average.toFixed(1) %><span class="small">/10</span>
+                    </div>
+                    <img src="<%=movie.poster_url%>" class="card-img-top" style="height: 18rem;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0 text-truncate" style="max-width: 80%;">
+                                <b><%= movie.title %></b>
+                            </h5>
+                            <small class="text-muted"><%= movie.duration %></small>
+                        </div>
+                        <p class="genre-text">
+                            <b><%= movie.genres.slice(0, 2).join(', ') %> </b>
+                            <% if(movie.genres.length > 2) { %>...<% } %>
+                        </p>
+                        <p class="card-text overview-text">
+                            <%= movie.overview %>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <% } %>
+    </div>
+<% } %>

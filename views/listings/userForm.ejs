@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineView</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body>
+    <%- include("../includes/navbar.ejs") %> <br>
+    
+    <div class="flash">
+        <%- include("../includes/flash.ejs") %>
+    </div>    
+
+    <!-- yes, I want to separate login / signup -->
+    <div class="userForm">
+        <div class="div">
+            <label for="login">
+                <input type="radio" id="login" name="auth" checked>
+                <span>login</span>
+            </label>
+
+            <label for="signup">
+                <input type="radio" id="signup" name="auth">
+                <span>signup</span>
+            </label>
+        </div>
+        
+        <div class="form">
+            <div class="loginForm">
+                <form method="post" action="/user/login">
+                    <br> 
+                    <div class="username">
+                        <label for="username">Your Username: </label> <br>
+                        <input type="text" id="username" name="username" placeholder="Input your Username" required>
+                    </div> <br>
+                    
+                    <div class="pass">
+                        <label for="password"> Your Password: </label> <br>
+                        <input type="password" id="password" name="password" placeholder="Input password" required>
+                    </div> <br>
+
+                    <br><br>
+                    <button class="btn btn-danger">login</button>
+                </form>
+
+            </div>
+
+            <div class="signupForm hidden">
+                <form method="post" action="/user/signup">
+                    <br>
+                    <div class="username">
+                        <label for="username">Enter Username: </label> <br>
+                        <input type="text" id="username" name="users[username]" placeholder="Input your Name" required>
+                    </div> <br>
+                    
+                    <div class="email">
+                        <label for="email">Enter Email: </label> <br>
+                        <input type="email" id="email" name="users[email]" placeholder="Input your email" required>
+                    </div> <br>
+                    
+                    <div class="pass">
+                        <label for="password"> Enter Password: </label> <br>
+                        <input type="password" id="password" name="users[password]" placeholder="Input password">
+                    </div> 
+
+                    <br><br>
+                    <button class="btn btn-danger">signup</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <br><br>
+    <%- include("../includes/footer.ejs") %>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="/js/userForm_script.js"></script>
+</body>
+</html>

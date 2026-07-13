@@ -1,0 +1,72 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<h2>Apply the filters: </h2> <br>
+<form method="get" action="/movies/filter">
+    <label for="title">Search by title: </label>
+    <input type="text" id="title" name="title" placeholder="e.g: Dhurandhar" style="font-weight: 500;">
+
+    <br> <br>
+
+    <label for="release_date_range_from">Search by Release-Date range: </label>
+    <input type="date" name="release_date_from" id="release_date_range_from">
+    <label for="release_date_range_to"> - </label>
+    <input type="date" name="release_date_to" id="release_date_range_to">
+
+    <br><br>
+
+    <label for="original_languages">Add languages: </label> <br> <br>
+    <div class="filter-container">
+        <% for(language of original_languages) { %>
+            <%
+                let lang = language
+                if(lang === 'en') lang = "English"
+                else lang = "Hindi"
+            %>
+
+            <label class="filter-pill">
+                <input type="checkbox" name="original_language" value="<%=language%>">
+                <span><%= lang %></span>
+            </label>
+        <%}%>
+    </div>
+
+    <br><br>
+
+    <label for="genres">Add Genres: </label> <br> <br>
+    <div class="filter-container">
+        <% for(genre of genres) { %>
+            <label class="filter-pill">
+                <input type="checkbox" name="genres" value="<%=genre%>">
+                <span><%= genre %></span>
+            </label>
+        <%}%>
+    </div>
+
+    <br><br>
+
+    <label for="Keyword_input">Add Keywords: </label>
+    <div class="wrapper">
+        <ul class="Common_list" id="Keyword_list"></ul>
+        <input type="text" class="Common_input" id="Keyword_input" placeholder="e.g. Revenge, Farm Life ..">
+    </div>
+
+    <br> <br>
+
+    <label for="Director_input">Add Directors: </label>
+    <div class="wrapper">
+        <ul class="Common_list" id="Director_list"></ul>
+        <input type="text" class="Common_input" id="Director_input" placeholder="e.g. Christopher Nolan, Priyadarshan ..">
+    </div>
+
+    <br> <br>
+
+    <label for="Cast_input">Add Cast: </label>
+    <div class="wrapper">
+        <ul class="Common_list" id="Cast_list"></ul>
+        <input type="text" class="Common_input" id="Cast_input" placeholder="e.g. Tom Cruise, Hrithik Roshan, Brad Pitt ..">
+    </div>
+    <br><br>
+
+    <button id="filter_submit">submit</button>
+</form>
+

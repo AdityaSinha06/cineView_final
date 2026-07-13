@@ -1,0 +1,40 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="row">
+    <div class="col-10 offset-1">
+        <h2><%= movie.title %></h2> <br>
+
+        <div class="card show-card">
+            <form class="watchlater-badge" action="/user/<%=movie._id%>/addtoList" method="post">
+                <button>watch-later</button>
+            </form>
+            <div class="rating-badge" style="width: 70px; height: 30px; font-size: large;">
+                <%= movie.vote_average.toFixed(1) %> <span class="small"> /10</span>
+            </div>
+            <img src="<%= movie.poster_url%>" class="card-img-top show-img" alt="<%=movie.title%> poster">
+            <div class="movie-details">
+                <p><b>Release Date: </b> <%= movie.release_date%></p>
+                <%  let language = ""
+                    if( movie.original_language  === 'hi') language = "Hindi"
+                    else language = "English"
+                %>
+                <p><b>Original Language: </b> <%= language %></p>
+                <p><b>Genres: </b> <%= movie.genres.join(', ')%></p>
+                <p><b>Directors: </b> <%= movie.directors.join(', ')%></p>
+                <p><b>Cast: </b> <%= movie.cast.join(', ')%></p>
+                <p><b>Overview: </b> <%= movie.overview%></p>
+                <p><b>Keywords: </b> <%= movie.keywords.map(k => k.charAt(0).toUpperCase() + k.slice(1)).join(', ') %></p>
+
+                
+                <p><b>Links: </b> 
+                    <ul>
+                        <li><b>TMDB Link: </b> <a href="https://www.themoviedb.org/movie/<%=movie.tmdb_id%>/"  target="_blank">Click Here</a></li>
+                        <li><b>IMDB Link: </b> <a href="https://www.imdb.com/title/<%=movie.imdb_id%>/" target="_blank">Click Here</a></li>
+                    </ul>
+                </p>
+                
+            </div>
+        </div>
+        
+    </div>
+</div>

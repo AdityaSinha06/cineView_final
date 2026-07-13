@@ -1,0 +1,11 @@
+package.json
+package-lock.json
+data.csv
+node_modules/
+.venv/
+dataset_builder/data/movies_dataset_with_duration.csv
+df.pkl
+indices.pkl
+tfidf_matrix.pkl
+tfidf.pkl
+utils/sessionConfig.js
